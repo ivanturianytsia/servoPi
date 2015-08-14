@@ -36,11 +36,13 @@ class FileHandler {
 private:
 	string filename;
 	int mode;
+	queue<string> commands;
 public:
 	FileHandler();
 	string getFilename();
 	int getMode();
-	queue<string> commands;
+	int getCommandCount();
+	int getNextCommand();
 };
 
 int main() {

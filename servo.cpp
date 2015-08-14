@@ -50,10 +50,10 @@ int main() {
     	return -1;
     };
 
-    FileHandler commandList;
-
 	string repeatAnswer = "y";
     do {
+    	// Getting commands
+    	FileHandler commandList;
         //moving
         ProgressBar Bar(commandList.getCommandCount());
         Bar.show();

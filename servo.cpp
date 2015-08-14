@@ -55,16 +55,16 @@ int main() {
 	string repeatAnswer = "y";
     do {
         //moving
-        ProgressBar Bar(commandList.commands.size());
+        ProgressBar Bar(commandList.getCommandCount());
         Bar.show();
         delay(1000);
-		while(!commandList.commands.empty()) {
-			istringstream iss(commandList.commands.pop());
+		while(commandList.getCommandCount() != 0) {
+			istringstream iss(commandList.getNextCommand());
 			int lineValue = 0;
 			if (!(iss >> lineValue)) {
 				continue;
 			}
-			switch(mode) {
+			switch(commandList.getMode()) {
 				case 0:
                     if (turnToAngle(lineValue) == 0) {
                         Bar.addValid();
@@ -221,4 +221,10 @@ string FileHandler::getFilename() {
 }
 int FileHandler::getMode() {
 	return this->mode;
+}
+int FileHandler::getCommandCount() {
+	return this->commands.size();
+}
+int FileHandler::getNextCommand() {
+	return this->commands.pop();
 }

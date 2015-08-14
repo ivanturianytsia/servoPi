@@ -50,7 +50,7 @@ int main() {
     	return -1;
     };
 
-    FileHandler commandList();
+    FileHandler commandList;
 
 	string repeatAnswer = "y";
     do {
@@ -226,5 +226,8 @@ int FileHandler::getCommandCount() {
 	return commands.size();
 }
 string FileHandler::getNextCommand() {
-	return commands.pop();
+	string next;
+	next = commands.front();
+	commands.pop();
+	return next;
 }

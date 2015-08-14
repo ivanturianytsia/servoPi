@@ -42,7 +42,7 @@ public:
 	string getFilename();
 	int getMode();
 	int getCommandCount();
-	int getNextCommand();
+	string getNextCommand();
 };
 
 int main() {
@@ -225,6 +225,6 @@ int FileHandler::getMode() {
 int FileHandler::getCommandCount() {
 	return commands.size();
 }
-int FileHandler::getNextCommand() {
+string FileHandler::getNextCommand() {
 	return commands.pop();
 }

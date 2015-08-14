@@ -36,12 +36,11 @@ class FileHandler {
 private:
 	string filename;
 	int mode;
-	queue<string> commands;
 public:
 	FileHandler();
 	string getFilename();
 	int getMode();
-	int getCommandCount();
+	queue<string> commands;
 };
 
 int main() {
@@ -51,7 +50,7 @@ int main() {
     	return -1;
     };
 
-    FileHandler commandList = new FileHandler();
+    FileHandler commandList();
 
 	string repeatAnswer = "y";
     do {
@@ -85,7 +84,6 @@ int main() {
             Bar.show();
 			delay(1000);
 		}
-        inputFileMove.close();
 		cout << "Repeat procedure? (y/n) ";
         cin >> repeatAnswer;
     } while (repeatAnswer.compare("y") == 0);
@@ -104,7 +102,7 @@ int raspberrySetUp() {
 		cout << "ERROR: Unable too set up GPIO" << endl;
 		return -1;
 	};
-	return 0
+	return 0;
 }
 
 int turnToAngle(int angle) { // mode = 0
@@ -185,8 +183,8 @@ FileHandler::FileHandler() {
 		}
 		//choosing mode, it have to be included in the first line of the command sheet
 		ifstream inputFile(filename.c_str());
+		string line;
 		if (inputFile.is_open()) {
-			string line;
 			getline(inputFile, line);
 			if(line.compare("angle") == 0) {
 				cout << "Running in 'Angle' mode" << endl;
@@ -223,7 +221,4 @@ string FileHandler::getFilename() {
 }
 int FileHandler::getMode() {
 	return this->mode;
-}
-int FileHandler::getCommandCount() {
-	return this->commandCount;
 }

@@ -6,6 +6,7 @@
 #include <string>
 #include <cstring>
 #include <queue>
+#include <vector>
 #define start 175
 #define finish 194
 
@@ -36,13 +37,15 @@ class FileHandler {
 private:
 	string filename;
 	int mode;
-	queue<string> commands;
+	vector<string> commands;
+	queue<string> commandsDynamic;
 public:
 	FileHandler();
 	string getFilename();
 	int getMode();
 	int getCommandCount();
 	string getNextCommand();
+	void reloadCommands();
 };
 
 int main() {
@@ -50,10 +53,13 @@ int main() {
     	return -1;
     };
 
+    // Getting commands
+    FileHandler commandList;
+
 	string repeatAnswer = "y";
     do {
-    	// Getting commands
-    	FileHandler commandList;
+    	// Preparing to execute
+    	commandList.reloadCommands();
         //moving
         ProgressBar Bar(commandList.getCommandCount());
         Bar.show();
@@ -203,15 +209,18 @@ FileHandler::FileHandler() {
 			inputFile.close();
 			continue;
 		}
-		// reading commands
+		// Reading commands
         while(getline(inputFile, line)) {
             this->commands.push(line);
         }
         inputFile.close();
     	break;
 	} while(true);
+
+	// Preparing to execute
+	reloadCommands();
     
-    //saving filename for future use
+    // Saving filename for future use
     ofstream outputSavedCommandFile("servoLastUsedFileName.txt");
     outputSavedCommandFile << this->filename;
     outputSavedCommandFile.close();
@@ -223,11 +232,17 @@ int FileHandler::getMode() {
 	return this->mode;
 }
 int FileHandler::getCommandCount() {
-	return this->commands.size();
+	return this->commandsDynamic.size();
 }
 string FileHandler::getNextCommand() {
 	string next;
-	next = this->commands.front();
-	this->commands.pop();
+	next = this->commandsDynamic.front();
+	this->commandsDynamic.pop();
 	return next;
+}
+void FileHandler::reloadCommands() {
+	this->commandsDynamic = queue<string>(); // Clearing the dynamic command list
+	for(int i = 0; i < this->commands.size(); i++) {
+		this->commandsDynamic.push(this->commands[i]);
+	}
 }

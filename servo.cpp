@@ -46,7 +46,7 @@ public:
 };
 
 int main() {
-    if (!raspberrySetUp()) {
+    if (raspberrySetUp() == -1) {
     	return -1;
     };
 
@@ -162,37 +162,37 @@ void ProgressBar::show() {
 // FileHandler methods
 FileHandler::FileHandler() {
 	do {
-		filename = "servocmd.txt"; // Default filename
+		this->filename = "servocmd.txt"; // Default filename
 
 		ifstream inputSavedCommandFile("servoLastUsedFileName.txt");
 		if(inputSavedCommandFile.is_open()) {
-			inputSavedCommandFile >> filename;
+			inputSavedCommandFile >> this->filename;
 			inputSavedCommandFile.close();
 		}
 		string continueAnswer = "y";
 		for(;;) {
-			cout << "Continue with last used command file '" << filename << "'? (y/n) ";
+			cout << "Continue with last used command file '" << this->filename << "'? (y/n) ";
 			cin >> continueAnswer;
 			if(continueAnswer == "y") {
 				break;
 			} else if(continueAnswer == "n") {
 				cout << "Please, enter command filename: ";
-				cin >> filename;
+				cin >> this->filename;
 				break;
 			}
 		}
 		//choosing mode, it have to be included in the first line of the command sheet
-		ifstream inputFile(filename.c_str());
+		ifstream inputFile(this->filename.c_str());
 		string line;
 		if (inputFile.is_open()) {
 			getline(inputFile, line);
 			if(line.compare("angle") == 0) {
 				cout << "Running in 'Angle' mode" << endl;
-				mode = 0;
+				this->mode = 0;
 
 			} else if(line.compare("position") == 0) {
 				cout << "Running in 'Position' mode" << endl;
-				mode = 1;
+				this->mode = 1;
 			} else {
 				cout << "Error: No valid command file detected" << endl;
 				inputFile.close();
@@ -205,7 +205,7 @@ FileHandler::FileHandler() {
 		}
 		// reading commands
         while(getline(inputFile, line)) {
-            commands.push(line);
+            this->commands.push(line);
         }
         inputFile.close();
     	break;
@@ -213,21 +213,21 @@ FileHandler::FileHandler() {
     
     //saving filename for future use
     ofstream outputSavedCommandFile("servoLastUsedFileName.txt");
-    outputSavedCommandFile << filename;
+    outputSavedCommandFile << this->filename;
     outputSavedCommandFile.close();
 };
 string FileHandler::getFilename() {
-	return filename;
+	return this->filename;
 }
 int FileHandler::getMode() {
-	return mode;
+	return this->mode;
 }
 int FileHandler::getCommandCount() {
-	return commands.size();
+	return this->commands.size();
 }
 string FileHandler::getNextCommand() {
 	string next;
-	next = commands.front();
-	commands.pop();
+	next = this->commands.front();
+	this->commands.pop();
 	return next;
 }

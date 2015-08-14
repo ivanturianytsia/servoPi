@@ -220,11 +220,11 @@ string FileHandler::getFilename() {
 	return filename;
 }
 int FileHandler::getMode() {
-	return this->mode;
+	return mode;
 }
 int FileHandler::getCommandCount() {
-	return this->commands.size();
+	return commands.size();
 }
 int FileHandler::getNextCommand() {
-	return this->commands.pop();
+	return commands.pop();
 }

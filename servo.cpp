@@ -46,8 +46,6 @@ public:
 };
 
 int main() {
-	int mode = 1; // Position mode
-
     if (!raspberrySetUp()) {
     	return -1;
     };
@@ -164,11 +162,11 @@ void ProgressBar::show() {
 // FileHandler methods
 FileHandler::FileHandler() {
 	do {
-		this->filename = "servocmd.txt"; // Default filename
+		filename = "servocmd.txt"; // Default filename
 
 		ifstream inputSavedCommandFile("servoLastUsedFileName.txt");
 		if(inputSavedCommandFile.is_open()) {
-			inputSavedCommandFile >> this->filename;
+			inputSavedCommandFile >> filename;
 			inputSavedCommandFile.close();
 		}
 		string continueAnswer = "y";
@@ -179,7 +177,7 @@ FileHandler::FileHandler() {
 				break;
 			} else if(continueAnswer == "n") {
 				cout << "Please, enter command filename: ";
-				cin >> this->filename;
+				cin >> filename;
 				break;
 			}
 		}
@@ -190,11 +188,11 @@ FileHandler::FileHandler() {
 			getline(inputFile, line);
 			if(line.compare("angle") == 0) {
 				cout << "Running in 'Angle' mode" << endl;
-				this->mode = 0;
+				mode = 0;
 
 			} else if(line.compare("position") == 0) {
 				cout << "Running in 'Position' mode" << endl;
-				this->mode = 1;
+				mode = 1;
 			} else {
 				cout << "Error: No valid command file detected" << endl;
 				inputFile.close();
@@ -207,7 +205,7 @@ FileHandler::FileHandler() {
 		}
 		// reading commands
         while(getline(inputFile, line)) {
-            this->commands.push(line);
+            commands.push(line);
         }
         inputFile.close();
     	break;
@@ -215,11 +213,11 @@ FileHandler::FileHandler() {
     
     //saving filename for future use
     ofstream outputSavedCommandFile("servoLastUsedFileName.txt");
-    outputSavedCommandFile << this->filename;
+    outputSavedCommandFile << filename;
     outputSavedCommandFile.close();
 };
 string FileHandler::getFilename() {
-	return this->filename;
+	return filename;
 }
 int FileHandler::getMode() {
 	return this->mode;

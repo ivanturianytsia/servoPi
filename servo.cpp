@@ -211,7 +211,7 @@ FileHandler::FileHandler() {
 		}
 		// Reading commands
         while(getline(inputFile, line)) {
-            this->commands.push(line);
+            this->commands.push_back(line);
         }
         inputFile.close();
     	break;
@@ -242,7 +242,7 @@ string FileHandler::getNextCommand() {
 }
 void FileHandler::reloadCommands() {
 	this->commandsDynamic = queue<string>(); // Clearing the dynamic command list
-	for(int i = 0; i < this->commands.size(); i++) {
+	for(unsigned int i = 0; i < this->commands.size(); i++) {
 		this->commandsDynamic.push(this->commands[i]);
 	}
 }
